@@ -6,13 +6,21 @@ class Vehicle {
         this.velocity = new Vector();
         this.acceleration = new Vector();
         this.maxSpeed = 5;
-        this.maxForce = 0.1;
+        this.maxForce = 0.01;
+    }
+    seek(target){
+        // Desired velocity is the vector pointing from the position to the target
+        const desired = target.subtract(this.position);
+        desired.normalize().multiply(this.maxSpeed);
+        const steer = desired.subtract(this.velocity);
+        steer.limit(this.maxForce);
+        this.acceleration.add(steer);
     }
     
     setPosition(value) {
         this.position = value;
     }
-    
+     
     setVelocity(value) {
         this.velocity = value;
     }

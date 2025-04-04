@@ -11,6 +11,12 @@ const height = canvas.height = window.innerHeight;
 const vehicles = [];
 const vehicleCount = 100;
 console.log("I loaded");
+let mouseX = 0;
+let mouseY = 0;
+window.addEventListener('mousemove', (event) => {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+});
 
 for (let i = 0; i < vehicleCount; i++) {
     const vehicle = new Vehicle();
@@ -32,10 +38,15 @@ for (let i = 0; i < vehicleCount; i++) {
 function update() {
     ctx.clearRect(0, 0, width, height);
     for (let vehicle of vehicles) {
+        vehicle.seek(new Vector(mouseX, mouseY));
         vehicle.update();
         vehicle.checkEdges();
         vehicle.render(ctx);
     }
+    ctx.fillStyle = "red";
+    ctx.beginPath();
+    ctx.arc(mouseX, mouseY, 20, 0, Math.PI * 2);
+    ctx.fill();
     requestAnimationFrame(update);
 }
 update();
